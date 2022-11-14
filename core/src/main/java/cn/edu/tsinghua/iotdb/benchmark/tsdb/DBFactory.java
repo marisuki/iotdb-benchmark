@@ -38,6 +38,19 @@ public class DBFactory {
     String dbClass = "";
     try {
       switch (dbConfig.getDB_SWITCH()) {
+        // IoTDB udf
+        case DB_IOT_UDF_JDBC:
+          dbClass = Constants.IOTDBUDF_JDBC_CLASS;
+          break;
+        case DB_IOT_UDF_SESSION_BY_TABLET:
+        case DB_IOT_UDF_SESSION_BY_RECORD:
+        case DB_IOT_UDF_SESSION_BY_RECORDS:
+          if (config.isIS_ALL_NODES_VISIBLE()) {
+            dbClass = Constants.IOTDBUDF_ROUNDROBIN_SESSION_CLASS;
+          } else {
+            dbClass = Constants.IOTDBUDF_SESSION_CLASS;
+          }
+          break;
           // IoTDB 0.13
         case DB_IOT_013_JDBC:
           dbClass = Constants.IOTDB013_JDBC_CLASS;
